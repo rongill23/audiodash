@@ -10,10 +10,13 @@ environment:
   sdk: '>=2.18.2 <3.0.0'
 
 dependencies:
+  flutter_sound: ^9.2.13
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  audio_session: ^0.1.10
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

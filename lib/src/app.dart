@@ -1,4 +1,6 @@
+import 'package:communication_app/src/views/audioTest.dart';
 import 'package:communication_app/src/views/messages.dart';
+import 'package:communication_app/src/views/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -75,8 +77,12 @@ class MyApp extends StatelessWidget {
                     return const SampleItemDetailsView();
                   case Home.routeName:
                     return const Home();
+                  case ProfileView.routeName:
+                    return const ProfileView();
                   case MessagesView.routeName:
                     return const MessagesView();
+                  case SimpleRecorder.routeName:
+                    return SimpleRecorder();
                   default:
                     return const Home();
                 }

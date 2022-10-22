@@ -1,5 +1,6 @@
 import 'package:communication_app/src/views/home.dart';
 import 'package:communication_app/src/views/messages.dart';
+import 'package:communication_app/src/views/profile.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -17,10 +18,13 @@ class DrawerWidget extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text("Item 2"),
+          title: Text("Profile"),
+          onTap: (){
+            Navigator.restorablePushNamed(context, ProfileView.routeName);
+          },
         ),
         ListTile(
-          title: Text("Item 3"),
+          title: Text("Messages"),
           onTap: () {
             Navigator.restorablePushNamed(context, MessagesView.routeName);
           },
