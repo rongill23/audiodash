@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "375052660442",
+    "firebase_url": "https://audiodash-64b7c-default-rtdb.firebaseio.com",
+    "project_id": "audiodash-64b7c",
+    "storage_bucket": "audiodash-64b7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375052660442:android:07d75d9bdc0e120c923fe3",
+        "android_client_info": {
+          "package_name": "com.example.communication_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375052660442-fh36981ie4rs3iqticajhvfdn018sh3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg4Y0KlX2_FYXzUk_Arzc28vFNvyjfgZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375052660442-fh36981ie4rs3iqticajhvfdn018sh3k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "375052660442-5i9ft1jppblukkii2ldb6go72qv85fj1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.communicationApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
