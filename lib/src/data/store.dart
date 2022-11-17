@@ -5,7 +5,8 @@ import 'package:vxstate/vxstate.dart';
 
 class MyStore extends VxStore {
   final counter = Counter();
-  var user = AppUser();
+  var user = AppUser("", "", "", []);
+  String groupID = "";
   bool isFetching = false;
   FirebaseFirestore _db = FirebaseFirestore.instance;
   // @override
@@ -14,18 +15,14 @@ class MyStore extends VxStore {
   // }
 }
 
-
 class UpdateUserMutation extends VxMutation<MyStore> {
   @override
-  void perform() {
-    return;
-  }
+  void perform() {}
 
   Future<void> update(user) async {
     store!.user = user;
   }
 }
-
 
 class Counter {
   int count = 0;
@@ -39,8 +36,6 @@ class Counter {
   }
 }
 
-
-
 class IncrementMutation extends VxMutation<MyStore> {
   @override
   Future<void> perform() async {
@@ -53,8 +48,6 @@ class IncrementMutation extends VxMutation<MyStore> {
     super.onException(e, s);
   }
 }
-
-
 
 class DecrementMutation extends VxMutation<MyStore> {
   @override

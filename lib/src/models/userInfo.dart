@@ -4,4 +4,9 @@ class AppUser {
   List<dynamic> groups = [];
   String name = "";
   bool status = true;  
+
+
+AppUser(this.email, this.userID, this.name, this.groups);
+
+
 }

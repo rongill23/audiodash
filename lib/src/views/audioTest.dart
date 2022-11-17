@@ -1,59 +1,3 @@
-// // import 'package:communication_app/src/services/soundRecorder.dart';
-// // import 'package:flutter/material.dart';
-// // import 'package:flutter/src/widgets/container.dart';
-// // import 'package:flutter/src/widgets/framework.dart';
-
-// // class SimpleRecorder extends StatefulWidget {
-// //   const SimpleRecorder({super.key});
-// //   static const routeName = "/recorder";
-// //   @override
-// //   State<SimpleRecorder> createState() => _SimpleRecorderState();
-// // }
-
-// // class _SimpleRecorderState extends State<SimpleRecorder> {
-// //   final recorder = SoundRecorder();
-
-// //   @override
-// //   void initState() {
-// //     recorder.init();
-
-// //     super.initState();
-// //   }
-
-// //   @override
-// //   void dispose() {
-// //     recorder.dispose();
-// //     super.dispose();
-// //   }
-
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     final isRecording = recorder.isRecording;
-// //     final icon = isRecording ? Icons.stop : Icons.mic;
-// //     final recordingText = isRecording ? "Stop" : "Record";
-// //     return Scaffold(
-// //       appBar: AppBar(title: Text("Recorder")),
-// //       body: Container(
-// //         child: Column(
-// //           children: [
-// //             ElevatedButton(
-// //                 onPressed: (() async {
-// //                   final isRecording = await recorder.toggleRecording();
-// //                   setState(() {});
-// //                 }),
-// //                 child: Container(
-// //                   width: 30,
-// //                   child: Row(
-// //                     children: [Icon(icon), Text(recordingText)],
-// //                   ),
-// //                 ))
-// //           ],
-// //         ),
-// //       ),
-// //     );
-// //   }
-// // }
-
 // /*
 //  * Copyright 2018, 2019, 2020, 2021 Dooboolab.
 //  *
@@ -435,12 +379,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:audio_session/audio_session.dart';
+import 'package:communication_app/src/data/store.dart';
+import 'package:communication_app/src/services/firebaseMethods.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:vxstate/vxstate.dart';
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -455,18 +402,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 ///
 typedef _Fn = void Function();
 
-/* This does not work. on Android we must have the Manifest.permission.CAPTURE_AUDIO_OUTPUT permission.
- * But this permission is _is reserved for use by system components and is not available to third-party applications._
- * Pleaser look to [this](https://developer.android.com/reference/android/media/MediaRecorder.AudioSource#VOICE_UPLINK)
- *
- * I think that the problem is because it is illegal to record a communication in many countries.
- * Probably this stands also on iOS.
- * Actually I am unable to record DOWNLINK on my Xiaomi Chinese phone.
- *
- */
-//const theSource = AudioSource.voiceUpLink;
-//const theSource = AudioSource.voiceDownlink;
-
 const theSource = AudioSource.microphone;
 final storageRef = FirebaseStorage.instance.ref('');
 final audioStorageRef = storageRef.child('audio/tau_file.mp4');
@@ -474,6 +409,9 @@ final metaData = SettableMetadata(contentType: "video/mp4");
 
 /// Example app.
 class SimpleRecorder extends StatefulWidget {
+  const SimpleRecorder({Key? key}) : super(key: key);
+
+ 
   static const routeName = "/recorder";
   @override
   _SimpleRecorderState createState() => _SimpleRecorderState();
@@ -487,6 +425,9 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
+  String groupID = "";
+  FirebaseMethods methods = FirebaseMethods();
+  MyStore store = VxState.store as MyStore;
 
   @override
   void initState() {
@@ -572,12 +513,15 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
       setState(() {
         //var url = value;
         _mplaybackReady = true;
-        
+
         debugPrint(value.toString());
         debugPrint(file.toString());
       });
 
-       try {
+      try {
+        methods.createAudioMessage(
+            file, {"groupID": store.groupID, "userID": store.user.userID});
+
         audioStorageRef.putFile(file, metaData).then((p0) {
           print("\n\n Done");
         });
@@ -701,8 +645,3 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     );
   }
 }
-
-
-
-
-

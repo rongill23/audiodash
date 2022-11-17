@@ -1,9 +1,13 @@
+import 'package:communication_app/src/data/store.dart';
 import 'package:communication_app/src/services/firebaseAuth.dart';
 import 'package:communication_app/src/views/home.dart';
 import 'package:communication_app/src/views/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vxstate/vxstate.dart';
+
+import '../models/userInfo.dart';
 
 class LogInPageWidget extends StatefulWidget {
   const LogInPageWidget({Key? key}) : super(key: key);
@@ -16,7 +20,6 @@ class _LogInPageWidgetState extends State<LogInPageWidget> {
   String? choiceChipsValue;
   TextEditingController? textController1;
   TextEditingController? textController2;
-
   late bool passwordVisibility;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -227,12 +230,7 @@ class _LogInPageWidgetState extends State<LogInPageWidget> {
                             }
 
                             auth.signInWithEmailAndPassword(
-                                textController1!.text, textController2!.text).then((bool? value) {
-                                 setState(() {
-                                   
-                                 });
-                                });
-                            
+                                textController1!.text, textController2!.text);
                           },
                           child: Text(
                             "Log In",
@@ -240,9 +238,12 @@ class _LogInPageWidgetState extends State<LogInPageWidget> {
                           ),
                         ),
                       ),
-                      GestureDetector(child: Text("Register Now"), onTap: () {
-                        Navigator.pushNamed(context, Register.routeName);
-                      },)
+                      GestureDetector(
+                        child: Text("Register Now"),
+                        onTap: () {
+                          Navigator.pushNamed(context, Register.routeName);
+                        },
+                      )
                     ],
                   ),
                 ),
