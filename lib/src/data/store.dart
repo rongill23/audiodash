@@ -1,5 +1,8 @@
+// Written by Ronald Gilliard Jr -> https://github.com/rongill23
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communication_app/src/models/userInfo.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:vxstate/vxstate.dart';
 
@@ -7,6 +10,7 @@ class MyStore extends VxStore {
   final counter = Counter();
   var user = AppUser("", "", "", []);
   String groupID = "";
+  Map<String, dynamic> groupInfo = {};
   bool isFetching = false;
   FirebaseFirestore _db = FirebaseFirestore.instance;
   // @override

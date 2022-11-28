@@ -1,3 +1,5 @@
+// Written by Ronald Gilliard Jr -> https://github.com/rongill23
+
 import 'package:communication_app/src/services/firebaseAuth.dart';
 import 'package:communication_app/src/views/audioRecorder.dart';
 import 'package:communication_app/src/views/audioTest.dart';
@@ -5,6 +7,8 @@ import 'package:communication_app/src/views/home.dart';
 import 'package:communication_app/src/views/login.dart';
 import 'package:communication_app/src/views/messages.dart';
 import 'package:communication_app/src/views/profile.dart';
+import 'package:communication_app/src/views/webRTCTest.dart';
+import 'package:communication_app/src/widgets/playAudioMessageWidget.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -12,9 +16,7 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Authentication auth = Authentication();
-
 
     return SafeArea(
       child: Drawer(
@@ -32,36 +34,43 @@ class DrawerWidget extends StatelessWidget {
               Navigator.restorablePushNamed(context, ProfileView.routeName);
             },
           ),
-          ListTile(
-            title: Text("Messages"),
-            onTap: () {
-              Navigator.restorablePushNamed(context, MessagesView.routeName);
-            },
-          ),
-          ListTile(
-            title: Text("Recorder"),
-            onTap: () {
-              Navigator.restorablePushNamed(context, SimpleRecorder.routeName);
-            },
-          ),
-          ListTile(
-            title: Text("LoginPage"),
-            onTap: () {
-              Navigator.restorablePushNamed(context, LogInPageWidget.routeName);
-            },
-          ),
-           ListTile(
-            title: Text("Record Audio"),
-            onTap: () {
-              Navigator.restorablePushNamed(context, AudioRecorder.routeName);
-            },
-          ),
+          // ListTile(
+          //   title: Text("Messages"),
+          //   onTap: () {
+          //     Navigator.restorablePushNamed(context, MessagesView.routeName);
+          //   },
+          // ),
+          // ListTile(
+          //   title: Text("Recorder"),
+          //   onTap: () {
+          //     Navigator.restorablePushNamed(context, SimpleRecorder.routeName);
+          //   },
+          // ),
+          // ListTile(
+          //   title: Text("LoginPage"),
+          //   onTap: () {
+          //     Navigator.restorablePushNamed(context, LogInPageWidget.routeName);
+          //   },
+          // ),
+          // ListTile(
+          //   title: Text("Record Audio"),
+          //   onTap: () {
+          //     Navigator.restorablePushNamed(context, AudioRecorder.routeName);
+          //   },
+          // // ),
+          // ListTile(
+          //   title: Text("Play Audio Message"),
+          //   onTap: () {
+          //     Navigator.restorablePushNamed(context, PlayAudioMessage.routeName);
+          //   },
+          // ),
+
           Expanded(
               child: Align(
             alignment: FractionalOffset.bottomCenter,
             child: ListTile(
-              onTap: (){
-                auth.signOut();
+              onTap: () {
+                // auth.signOut();
               },
               title: Text("Sign Out"),
             ),

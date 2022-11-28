@@ -1,7 +1,9 @@
+// Written by Ronald Gilliard Jr -> https://github.com/rongill23
+
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:communication_app/src/data/store.dart';
 import 'package:communication_app/src/models/userInfo.dart';
-import 'package:communication_app/src/sample_feature/sample_item_details_view.dart';
+import 'package:communication_app/src/services/firebaseMethods.dart';
 import 'package:communication_app/src/settings/settings_view.dart';
 import 'package:communication_app/src/views/audioRecorder.dart';
 import 'package:communication_app/src/views/audioTest.dart';
@@ -34,11 +36,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Run the app and pass in the SettingsController. The app listens to the
-  // SettingsController for changes, then passes it further down to the
-  // SettingsView.
+//  This code listens to changes on the authentication state. If a user is logged out it will show the appropiate login screen.
 
-  FirebaseAuth.instance.authStateChanges().listen((User? user) {
+  FirebaseAuth.instance.authStateChanges().listen((User? user) async {
     if (user == null) {
       runApp(MaterialApp(
           home: LogInPageWidget(),
@@ -57,8 +57,6 @@ void main() async {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
                   case Home.routeName:
                     return const Home();
                   case ProfileView.routeName:
@@ -78,9 +76,18 @@ void main() async {
             );
           }));
     } else {
+      FirebaseMethods methods = FirebaseMethods();
+      AppUser appUser = await methods.getUser(user.uid);
+
+// The VXState wrapper for the MyApp widget is in a sense a data source for the entirety of the app. It allows the storage of frequently used data throughout the app.
+
       runApp(VxState(
           store: MyStore(),
-          child: MyApp(id: user.uid, settingsController: settingsController)));
+          child: MyApp(
+            id: user.uid,
+            settingsController: settingsController,
+            user: appUser,
+          )));
     }
   });
 }

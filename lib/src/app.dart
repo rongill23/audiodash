@@ -1,3 +1,7 @@
+// Written by Ronald Gilliard Jr -> https://github.com/rongill23
+
+import 'package:communication_app/src/data/store.dart';
+import 'package:communication_app/src/models/userInfo.dart';
 import 'package:communication_app/src/views/audioRecorder.dart';
 import 'package:communication_app/src/views/audioTest.dart';
 import 'package:communication_app/src/views/intro.dart';
@@ -5,10 +9,13 @@ import 'package:communication_app/src/views/login.dart';
 import 'package:communication_app/src/views/messages.dart';
 import 'package:communication_app/src/views/profile.dart';
 import 'package:communication_app/src/views/register.dart';
+import 'package:communication_app/src/views/webRTCTest.dart';
+import 'package:communication_app/src/widgets/playAudioMessageWidget.dart';
+import 'package:communication_app/src/widgets/viewMessages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'sample_feature/sample_item_details_view.dart';
+import 'package:vxstate/vxstate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
@@ -16,12 +23,20 @@ import 'views/home.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.settingsController, required this.id});
+  const MyApp(
+      {super.key,
+      required this.settingsController,
+      required this.id,
+      required this.user});
   final String id;
+  final AppUser user;
   final SettingsController settingsController;
 
   @override
   Widget build(BuildContext context) {
+    MyStore store = VxState.store as MyStore;
+    store.user = user;
+
     // Glue the SettingsController to the MaterialApp.
     //
     // The AnimatedBuilder Widget listens to the SettingsController for changes.
@@ -79,6 +94,8 @@ class MyApp extends StatelessWidget {
             Register.routeName: (context) => Register()
           },
 
+          // On the execution of the navigator pushNamed methods which are found throughout the app the code below returns different views which
+
           onGenerateRoute: (RouteSettings routeSettings) {
             return MaterialPageRoute<void>(
               settings: routeSettings,
@@ -86,8 +103,6 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
                   case Home.routeName:
                     return const Home();
                   case ProfileView.routeName:
@@ -100,6 +115,10 @@ class MyApp extends StatelessWidget {
                     return AudioRecorder();
                   case LogInPageWidget.routeName:
                     return LogInPageWidget();
+                  // case PlayAudioMessage.routeName:
+                  //   return PlayAudioMessage();
+                  case MessagesWidget.routeName:
+                    return MessagesWidget(groupInfo: store.groupInfo);
                   default:
                     return const Home();
                 }

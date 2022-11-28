@@ -1,3 +1,6 @@
+// Written by Ronald Gilliard Jr -> https://github.com/rongill23
+
+
 import 'package:flutter_sound/flutter_sound.dart';
 
 class SoundPlayback {
