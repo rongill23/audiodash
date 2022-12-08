@@ -1,3 +1,5 @@
+// Written by Ronald Gilliard Jr -> https://github.com/rongill23
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communication_app/src/services/firebaseMethods.dart';
 import 'package:communication_app/src/widgets/playAudioMessageWidget.dart';
@@ -7,8 +9,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
-// Written by Ronald Gilliard Jr -> https://github.com/rongill23
 
 class MessagesWidget extends StatefulWidget {
   const MessagesWidget({super.key, required this.groupInfo});
@@ -130,13 +130,15 @@ class _MessagesWidgetState extends State<MessagesWidget> {
                                             child: CircularProgressIndicator());
                                       }
                                       if (snapshot2.hasData) {
+                                        var userID = methods
+                                            .getUser(snapshot2.data["sentBy"]);
+
                                         return Container(
                                           child: Column(
                                             children: [
                                               PlayAudioMessage(
                                                 messageInfo: {
-                                                  "sentBy":
-                                                      snapshot2.data["sentBy"],
+                                                  "sentBy": userID,
                                                   "groupID": widget
                                                       .groupInfo["groupID"],
                                                   "messageID": messages[index],

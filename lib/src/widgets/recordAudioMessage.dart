@@ -120,8 +120,14 @@ class _RecordAudioMessageState extends State<RecordAudioMessage> {
       setState(() {});
     });
   }
+// This method automatically runs whenever the player is stopped.
 
   void stopRecorder() async {
+
+
+
+
+
     await _mRecorder!.stopRecorder().then((value) {
       File file = File(value.toString());
       setState(() {

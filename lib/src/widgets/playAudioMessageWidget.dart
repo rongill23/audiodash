@@ -1,11 +1,11 @@
 // Written by Ronald Gilliard Jr -> https://github.com/rongill23
 
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:communication_app/src/models/userInfo.dart';
 import 'package:communication_app/src/widgets/Drawer.dart';
 import 'package:communication_app/src/widgets/common.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -85,39 +85,49 @@ class PlayAudioMessageState extends State<PlayAudioMessage>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 150,
-        width: MediaQuery.of(context).size.width,
-        child: ListTile(
-          leading: Container(
-              child: Text(((widget.messageInfo["timestamp"] as Timestamp)
-                  .toDate()
-                  .toString()))),
-          title: Text(widget.messageInfo["sentBy"]),
-          subtitle: StreamBuilder<PositionData>(
-            stream: _positionDataStream,
-            builder: (context, snapshot) {
-              final positionData = snapshot.data;
-              return SeekBar(
-                duration: positionData?.duration ?? Duration.zero,
-                position: positionData?.position ?? Duration.zero,
-                bufferedPosition:
-                    positionData?.bufferedPosition ?? Duration.zero,
-                onChangeEnd: _player.seek,
-              );
-            },
-          ),
-          trailing: ControlButtons(_player),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.grey, width: 1),
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ),
-      ),
-    );
+    return FutureBuilder<AppUser>(
+        future: widget.messageInfo["sentBy"],
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 8.0),
+                child: ListTile(
+                  leading: Container(
+                      child: Text(
+                          ((widget.messageInfo["timestamp"] as Timestamp)
+                              .toDate()
+                              .toString()))),
+                  title: Text(snapshot.data!.name),
+                  subtitle: Container(
+                    width: MediaQuery.of(context).size.width * .4,
+                    child: StreamBuilder<PositionData>(
+                      stream: _positionDataStream,
+                      builder: (context, snapshot) {
+                        final positionData = snapshot.data;
+                        return SeekBar(
+                          duration: positionData?.duration ?? Duration.zero,
+                          position: positionData?.position ?? Duration.zero,
+                          bufferedPosition:
+                              positionData?.bufferedPosition ?? Duration.zero,
+                          onChangeEnd: _player.seek,
+                        );
+                      },
+                    ),
+                  ),
+                  trailing: ControlButtons(_player),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ),
+            );
+          }
 
+          return Container();
+        });
   }
 }
 
